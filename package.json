@@ -1,0 +1,26 @@
+{ "name": "music-performance-manager"
+, "version": "0.0.1"
+, "description": "web application for managing live music performances, esp. technical set-up"
+, "license" : "MIT"
+, "repository":  
+    { "type" : "git"
+    , "url" : "https://github.com/cgreenhalgh/music-performance-manager.git"
+    }
+, "dependencies": 
+    { "bower": "^1.3.1"
+    , "express": "^4.10.2"
+    }
+, "devDependencies": 
+    { "jasmine-core": "^2.4.1"
+    , "karma": "^0.13.22"
+    , "karma-chrome-launcher": "^1.0.1"
+    , "karma-firefox-launcher": "^1.0.0"
+    , "karma-jasmine": "^1.0.2"
+    , "karma-junit-reporter": "^1.0.0"
+    }
+, "scripts": 
+    { "pretest": "npm install --no-bin-links"
+    , "test": "karma start karma.conf.js"
+    , "test-single-run": "karma start karma.conf.js --single-run"
+    }
+}
