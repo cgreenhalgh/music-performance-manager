@@ -1,0 +1,14 @@
+{
+  "name": "music-performance-manager",
+  "description": "web application for managing live music performances, esp. technical set-up",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "angular": "^1.5.8",
+    "angular-mocks": "^1.5.8",
+    "bootstrap": "^3.3.7",
+    "jquery": "^3.1.1",
+    "angular-resource": "^1.5.8",
+    "angular-bootstrap": "^2.2.0"
+  }
+}
