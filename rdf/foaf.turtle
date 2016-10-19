@@ -14,8 +14,15 @@ foaf:Person a owl:Class ;
 
 # foaf:nick - nickname
 
-foaf:Name a owl:DatatypeProperty ;
+foaf:name a owl:DatatypeProperty ;
 	rdfs:domain owl:Thing ;
 	rdfs:range owl:Literal ;
 	rdfs:subPropertyOf rdfs:label .
 
+# a bit of test data
+<#chris> a foaf:Person ;
+	foaf:name "Chris" .
+	
+<#adrian> a foaf:Person ;
+	foaf:name "Adrian" .
+	

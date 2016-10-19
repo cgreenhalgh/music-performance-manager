@@ -2,6 +2,12 @@
 
 var mpm_rdf = angular.module('mpm-rdf', []);
 
+mpm_rdf.value('OWL_THING', 'http://www.w3.org/2002/07/owl#Thing');
+mpm_rdf.value('OWL_CLASS', 'http://www.w3.org/2002/07/owl#Class');
+mpm_rdf.value('RDF_TYPE', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type');
+mpm_rdf.value('RDFS_SUB_CLASS_OF', 'http://www.w3.org/2000/01/rdf-schema#subClassOf');
+mpm_rdf.value('FOAF_NAME', 'http://xmlns.com/foaf/0.1/name');
+
 // return object with methods
 //   get(name) -> wrapper for named N3 Store (common cache, default '_default')
 // instance methods:
@@ -53,6 +59,70 @@ mpm_rdf.factory('mpmStore', ['$q', '$http', function($q, $http) {
 				deferred.reject(error);
 			});
 		return deferred.promise;
+	}
+	// simple data model from store.
+	// roots specific by property/value query
+	// TODO incremental update
+	// mappings, array of
+	//   conditions: { name: { subject, predicate, object } }
+	//   properties: { name: { type: value | values | children, value: condition name } }
+	// Note: _id is a special value for subject/object -> subject id
+	MpmStore.prototype.getModel = function(rootProperty, rootValue, mappings) {
+		var roots = this.store.find(null, rootProperty, rootValue);
+		var model = [];
+		var self = this;
+		function map( subject, item, mappings ) {
+			for (var mi in mappings) {
+				var failed = false;
+				var mapping = mappings[mi];
+				var conditionValues = {};
+				for (var cname in mapping.conditions) {
+					conditionValues[cname] = [];
+					var condition = mapping.conditions[cname];
+					var ss = self.store.find( condition.subject==='_id' ? item._id : condition.subject, condition.predicate, condition.object==='_id' ? item._id : condition.object );
+					for (var si in ss) {
+						var s = ss[si];
+						if (condition.subject===null || condition.subject===undefined)
+							conditionValues[cname].push(s.subject);
+						else
+							conditionValues[cname].push(s.object);
+					}
+					if (conditionValues[cname].length==0 && !condition.optional) {
+						failed = true;
+						break;
+					}
+				}
+				if (failed)
+					continue;
+				for (var pname in mapping.properties) {
+					var property = mapping.properties[pname];
+					var value = null;
+					if (property.type=='value')
+						value = conditionValues[property.value][0];
+					else if (property.type=='values')
+						value = conditionValues[property.value];
+					else if (property.type=='children') {
+						value = [];
+						for (var vi in conditionValues[property.value]) {
+							var childid = conditionValues[property.value][vi];
+							var child = { _id: childid };
+							// recurse
+							map( childid, child, mappings );
+							value.push( child );
+						}
+					}
+					item[pname] = value;
+				}
+			}
+		};
+		for (var ri in roots) {
+			var root = roots[ri];
+			var item = { _id: root.subject };
+			// TODO properties?
+			map( root.subject, item, mappings );
+			model.push(item);
+		}
+		return model;
 	}
 	return {
 		get: function(name) {
