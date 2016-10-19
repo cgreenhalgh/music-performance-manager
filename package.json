@@ -8,6 +8,7 @@
     "url": "https://github.com/cgreenhalgh/music-performance-manager.git"
   },
   "dependencies": {
+    "body-parser": "^1.15.2",
     "bower": "^1.7.9",
     "express": "^4.14.0",
     "n3": "^0.8.1",
