@@ -3,7 +3,10 @@ console.log('mpm...');
 
 var mpm = angular.module('mpm', ['mpm-rdf']);
 
-mpm.controller('MpmMainController', ['MpmN3test', function(MpmN3test) {
-	console.log('MpmMainController MpmN3test='+MpmN3test);
-	
+mpm.controller('MpmMainController', ['mpmStore', function(mpmStore) {
+	console.log('MpmMainController mpmStore='+mpmStore);
+	var store = mpmStore.get();
+	store.load('/rdf/foaf.turtle').then(
+			function(success) { console.log('ok: '+success); },
+			function(error) { console.log('failed: '+error); });
 }]);

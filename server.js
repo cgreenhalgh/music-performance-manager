@@ -13,7 +13,7 @@ app.get('/', function(req, res){
 	res.sendFile(__dirname + '/public/index.html');
 });
 function returnFile(req, res, root) {
-	root = root || '/public';
+	root = root!==undefined ? root : '/public';
 	var url = require('url').parse(req.url);
 	console.log('get ' + req.url + ' -> ' + root + url.pathname);
 	res.sendFile(__dirname + root + url.pathname);
@@ -27,7 +27,7 @@ app.get('/css/*.css', returnPublicFile);
 app.get('/js/*', returnPublicFile);
 app.get('/partials/*', returnPublicFile);
 
-app.get('/rdf/*', function(req, res) { returnFile(req, res, '/rdf'); });
+app.get('/rdf/*', function(req, res) { returnFile(req, res, ''); });
 
 http.listen(3000, function(){
 	console.log('listening on *:3000');
