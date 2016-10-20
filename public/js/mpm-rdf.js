@@ -67,8 +67,8 @@ mpm_rdf.factory('mpmStore', ['$q', '$http', function($q, $http) {
 	//   conditions: { name: { subject, predicate, object } }
 	//   properties: { name: { type: value | values | children, value: condition name } }
 	// Note: _id is a special value for subject/object -> subject id
-	MpmStore.prototype.getModel = function(rootProperty, rootValue, mappings) {
-		var roots = this.store.find(null, rootProperty, rootValue);
+	MpmStore.prototype.getModel = function(rootPredicate, rootObject, mappings) {
+		var roots = this.store.find(null, rootPredicate, rootObject);
 		var model = [];
 		var self = this;
 		function map( subject, item, mappings ) {
@@ -96,19 +96,22 @@ mpm_rdf.factory('mpmStore', ['$q', '$http', function($q, $http) {
 					continue;
 				for (var pname in mapping.properties) {
 					var property = mapping.properties[pname];
-					var value = null;
-					if (property.type=='value')
-						value = conditionValues[property.value][0];
-					else if (property.type=='values')
-						value = conditionValues[property.value];
-					else if (property.type=='children') {
-						value = [];
+					var value = { predicate: mapping.conditions[property.value].predicate, type: property.type };
+
+					if (property.type=='value') {
+						value.value = conditionValues[property.value][0];
+					}
+					else if (property.type=='values') {
+						value.values = conditionValues[property.value];
+					}
+					else if (property.type=='objects') {
+						value.objects = [];
 						for (var vi in conditionValues[property.value]) {
 							var childid = conditionValues[property.value][vi];
 							var child = { _id: childid };
 							// recurse
 							map( childid, child, mappings );
-							value.push( child );
+							value.objects.push( child );
 						}
 					}
 					item[pname] = value;

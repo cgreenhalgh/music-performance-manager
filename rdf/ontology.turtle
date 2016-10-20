@@ -1,0 +1,136 @@
+# current ontology
+
+@prefix foaf: <http://xmlns.com/foaf/0.1/>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix dc: <http://purl.org/dc/elements/1.1/>.
+@prefix mpm: <http://www.nottingham.ac.uk/mrl/mpm/0.1#>.
+
+# OWL roots
+owl:Thing a owl:Class.
+
+# A fragment of the FOAF ontology
+foaf:Person a owl:Class ;
+	rdfs:subClassOf owl:Thing .
+
+# foaf:nick - nickname
+
+foaf:name a owl:DatatypeProperty ;
+	rdfs:domain owl:Thing ;
+	rdfs:range owl:Literal ;
+	rdfs:subPropertyOf rdfs:label .
+
+# a bit of test data
+<#chris> a foaf:Person ;
+	foaf:name "Chris" .
+	
+<#adrian> a foaf:Person ;
+	foaf:name "Adrian" .
+
+# my property annotations
+# custom restriction... ?! owl:onClass and owl:onProperty
+mpm:editable a owl:DatatypeProperty ;
+	rdfs:domain owl:Restriction ;
+	rdfs:range xsd:boolean .
+
+# display manager
+
+# a physical or virtual screen
+mpm:Screen a owl:Class ;
+	rdfs:subClassOf owl:Thing .
+# has name
+# studio ontology virtual device?
+
+# a virtual / template screen
+mpm:ScreenTemplate a owl:Class ;
+	rdfs:subClassOf owl:mpm:Screen .
+	
+# a "real" screen, i.e. a browser view running the client
+mpm:BrowserView a owl:Class ;
+	rdfs:subClassOf mpm:Screen .
+# has name
+
+mpm:active a owl:DatatypeProperty ;
+	rdfs:domain mpm:ActualScreen ;
+	a owl:FunctionalProperty ;
+	rdfs:range xsd:boolean .
+
+mpm:screenNumber a owl:DatatypeProperty ;
+	rdfs:domain [ owl:unionOf ( mpm:BrowserView mpm:ScreenTemplate ) ]  ;
+	rdfs:range xsd:int ;
+	xsd:minInclusive "0"^^xsd:int .
+
+mpm:screenName a owl:DatatypeProperty ;
+	rdfs:domain [ owl:unionOf ( mpm:BrowserView mpm:ScreenTemplate ) ]  ;
+	rdfs:range xsd:Literal .
+
+mpm:screenTemplateAppliesTo a owl:ObjectProperty ;
+	rdfs:domain mpm:ScreenTemplate ;
+	rdfs:range mpm:BrowserView ;
+	a owl:InverseFunctionalProperty .
+
+mpm:ScreenSplit a owl:Class ;
+	rdfs:subClassOf owl:Thing .
+# studio ontology virtual device?
+
+mpm:orientation a owl:DatatypeProperty ;
+	a owl:FunctionalProperty ;
+	rdfs:domain mpm:ScreenSplit ;
+	rdfs:range [ a rdfs:Datatype ; owl:oneOf ( "horizontal" "vertical" ) ] .
+
+mpm:splitPoint a owl:DatatypeProperty ;
+	a owl:FunctionalProperty ;
+	rdfs:domain mpm:ScreenSplit ;
+	rdfs:range xsd:double ;
+	xsd:minInclusive "0"^^xsd:double ;
+	xsd:maxInclusive "100"^^xsd:double .
+
+mpm:split1 a owl:ObjectProperty ;
+	rdfs:domain	[ owl:unionOf ( mpm:ScreenSplit ) ] ;
+	rdfs:range [ owl:unionOf ( mpm:ScreenSplit mpm:Frame ) ] ;
+	a owl:FunctionalProperty ;
+	a owl:InverseFunctionalProperty .
+#   arity 1:1 . symmetric? reflexive?
+#[ a owl:Restriction ; owl:onProperty mpm:split1 ; owl:maxCardinality "1"^^xsd: ] .
+
+mpm:split2 a owl:ObjectProperty ;
+	rdfs:domain	[ owl:unionOf ( mpm:ScreenSplit ) ] ;
+	rdfs:range [ owl:unionOf ( mpm:ScreenSplit mpm:Frame ) ] ;
+	a owl:FunctionalProperty ;
+	a owl:InverseFunctionalProperty .
+#   arity 1:1
+#[ a Restriction ; owl:onProperty mpm:split2 ; owl:maxCardinality 1 ] .
+
+mpm:Frame a owl:Class ;
+	rdfs:subClassOf owl:Thing .
+# studio ontology virtual device???
+
+mpm:frame a owl:ObjectProperty ;
+	rdfs:domain	mpm:Screen ;
+	rdfs:range [ owl:unionOf ( mpm:ScreenSplit mpm:Frame ) ] ;
+	a owl:FunctionalProperty ;
+	a owl:InverseFunctionalProperty .
+#?[ a owl:Restriction ; owl:onProperty mpm:split1 ; owl:exactCardinality "1"^^xsd: ] .
+
+mpm:ScreenApp a owl:Class ;
+	rdfs:subClassOf owl:Thing .
+# studio ontology virtual device???
+
+mpm:app a owl:ObjectProperty ;
+	rdfs:domain	mpm:Frame ;
+	rdfs:range mpm:ScreenApp ;
+	a owl:FunctionalProperty .
+
+mpm:url a owl:DatatypeProperty ;
+	rdfs:domain mpm:ScreenApp ;
+	rdfs:range xsd:anyURI ;
+	a owl:FunctionalProperty .
+
+# same classes, different graph? parallel abstract classes?
+mpm:Scene a owl:Class ;
+	rdfs:subClassOf owl:Thing.
+
+mpm:hasScreenTemplates a owl:ObjectProperty ;
+	rdfs:domain mpm:Scene ;
+	rdfs:range mpm:ScreenTemplate .

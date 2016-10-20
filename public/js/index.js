@@ -17,7 +17,7 @@ mpm.controller('MpmMainController', ['$scope', 'mpmStore', 'RDFS_SUB_CLASS_OF', 
 					[
  						{ 
  							conditions: { instances: { predicate: RDF_TYPE, object: '_id' } },
- 							properties: { instances: { type: 'children', value: 'instances' } }
+ 							properties: { instances: { type: 'objects', value: 'instances' } }
  						},
  						{ 
  							conditions: { name: { subject: '_id', predicate: FOAF_NAME, optional: true } },
@@ -47,7 +47,7 @@ mpm.directive('mpmClass', [function() {
 		scope: {
 			ngModel: '='
 		},
-		template: '<li>{{ ngModel._id }}</li><ul><li ng-repeat="item in ngModel.instances">{{ item._id }} {{ item.name }}</li></ul>',
+		template: '<li>{{ ngModel._id }}</li><ul><li ng-repeat="item in ngModel.instances.objects">{{ item._id }} {{ item.name.value }}</li></ul>',
 		link: function(scope, element, attrs) {
 		}
 	};
