@@ -45,6 +45,43 @@ E.g.
 
 Mac OS X - see `dns-sd` command-line tool (!)
 
+Register example service (leave running):
+```
+dns-sd -R Thing _mpm._tcp . 3000
+```
+
+Browse:
+```
+$ dns-sd -B _mpm._tcp .
+Browsing for _mpm._tcp
+DATE: ---Sun 30 Oct 2016---
+21:50:22.645  ...STARTING...
+Timestamp     A/R    Flags  if Domain               Service Type         Instance Name
+21:50:22.646  Add        2   4 local.               _mpm._tcp.           Thing
+...
+21:53:16.023  Rmv        0   4 local.               _mpm._tcp.           Thing
+```
+Lookup:
+```
+$ dns-sd -L Thing _mpm._tcp .
+Lookup Thing._mpm._tcp.local
+DATE: ---Sun 30 Oct 2016---
+21:50:55.299  ...STARTING...
+21:50:55.300  Thing._mpm._tcp.local. can be reached at stross.local.:3000 (interface 4)
+```
+Address:
+```
+$ dns-sd -G v4 stross.local.
+DATE: ---Sun 30 Oct 2016---
+21:51:27.984  ...STARTING...
+Timestamp     A/R Flags if Hostname                               Address                                      TTL
+21:51:27.984  Add     2  4 stross.local.                          192.168.1.5                                  120
+```
+
+Perhaps see also Apple's Bonjour SDK for Windows (used in iTunes).
+
+"The DNS Service Discovery API, declared in /usr/include/dns_sd.h, provide low-level BSD socket communication for Bonjour services. ... DNS Service Discovery is also the API that should be used if developing Bonjour service applications for Windows, Linux, or FreeBSD."
+
 ## UPnP
 
 [Wikipedia](https://en.wikipedia.org/wiki/Universal_Plug_and_Play)
@@ -64,6 +101,12 @@ Mac OS X - see `dns-sd` command-line tool (!)
   - requires `avahi_pub` or `mdns2` node modules (first preferred)
 
 There is a windows implementation around.
+
+e.g. (Mac OS X)
+```
+dns-sd -B _apple-midi._udp .
+```
+
 
 ## EQUIP2 discovery
 
