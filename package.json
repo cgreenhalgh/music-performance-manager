@@ -12,7 +12,9 @@
     "bower": "^1.7.9",
     "express": "^4.14.0",
     "n3": "^0.8.1",
-    "nools": "^0.4.1"
+    "nools": "^0.4.1",
+    "os-tmpdir": "^1.0.2",
+    "uuid": "^3.0.1"
   },
   "devDependencies": {
     "jasmine-core": "^2.4.1",
