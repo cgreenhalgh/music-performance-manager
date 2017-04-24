@@ -29,6 +29,6 @@ app.get('/partials/*', returnPublicFile);
 
 app.get('/rdf/*', function(req, res) { returnFile(req, res, ''); });
 
-http.listen(3000, function(){
-	console.log('listening on *:3000');
+http.listen(3003, function(){
+	console.log('listening on *:3003');
 });

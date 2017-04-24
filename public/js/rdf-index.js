@@ -10,7 +10,7 @@ mpm.controller('MpmMainController', ['$scope', 'mpmStore', 'RDFS_SUB_CLASS_OF', 
 	console.log('MpmMainController mpmStore='+mpmStore);
 	$scope.classes = [];
 	var store = mpmStore.get();
-	store.load('/rdf/foaf.turtle').then(
+	store.load('/rdf/ontology.turtle').then(
 			function(success) {
 				console.log('ok: '+success); 
 				var mapping = 

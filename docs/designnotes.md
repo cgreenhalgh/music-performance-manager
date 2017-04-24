@@ -1,68 +1,72 @@
 # Design Notes
 
-## OWL ontology stuff
+## JSON-LD
 
-Probably better to use class-specific GUI elements for non-trivial editing constraints, rather than trying to find a way to encode it in OWL.
+Could use [JSON-LD](https://www.w3.org/TR/json-ld/) compact form(s) in Angular UI model.
 
-Using `owl:FunctionProperty` and `owl:InverseFunctionProperty` to mark arity on properties (latter not applicable to DatatypeProperties). 
+## Status Overview
 
-Planning to use custom `owl:Restriction`s to specify editability, etc. (`owl:onClass` and `owl:onProperty`).
+To support Climb! performance. 
 
-## RDF to Angular mapping
+A single networked status/management server. (Could be federated or hierarchical between different machines in the general case.)
 
-Like database views!
+Multiple monitoring agents which report to the status server, e.g. from MAX, musicodes, etc.
 
-Need to selectively unfold RDF structure to regular objects/arrays to underlie Angular UI.
+Status server supports:
+- viewing of current status
+- trouble-shooting
+- limited automation (via agents).
 
-RDF complex item -> JS Object with:
-- `uri` - URI
-- `types` - array of URI of rdf:type
-- `minTypes` - minimual array of rdf:type
-- `maxTypes` - maximal (transitively closed) array of rdf:type
-- `properties` - map from predicate URI to `PropertyValue` objects
+### Version 0.1 aims
 
-PropertyValue object is JS Object with:
-- `predicate` - predicate URI (if not clear from context)
-- `values` - array of values
+Dashboard view from status server.
 
-PredicateInfo has:
-- `uri`
-- `minArity`, usually 0, 1 or undefined
-- `maxArity`, usually 0, 1 or undefined
-- `range`
-- `domain`
+Indicate if:
+- musicides server is running
+  - associated URL (host, port)
+- musicodes (player) is running
+  - associated experience
+  - input(s)
+  - output(s)
+- meld server is running
+  - associated URL (host, port)
+- meld client is running
+  - MEI URL
+  
+See [modelling notes](modelling.md).
+  
+version 0.2:
+- MAX/MSP is running
+  - which patch(es)
+  - (MIDI) input(s)
+  - (MIDI) output(s)
 
-PredicateDisplayInfo (may be for a sub-domain) has:
-- `predicate` - URI
-- `domain` - for this particular rule
-- `useAsName` - boolean
-- `display` - by default
-- `advanced` 
-- `defaultValue` ?
-- `canCreate`
-- `canEdit` 
-- `canDelete`
-vs `introspected` (?vs `inferred`)
+## Implementation notes
 
-Relation ?
+### Interaction
 
-ClassInfo has:
-- `uri`
-- `label` ?
-- `subClassOf`
-- `minSubClassOf` - minimal subClassOf relations
-- `maxSubClassOf` - maximal (transitively closed) subClassOf relations
-- `canCreate` - by user
-- `canDelete` - by user
+Reporting agents submit reports periodically to status server.
 
-## Screen Manager
+Status server uses soft state to age/time out agent reports.
 
-Client application asserts 'BrowserView' to the server. Server signal no longer active on disconnect. Server collates and reports to registered manager(s). Client optionally specifies name (in URL parameter). BrowserView itself is new temporary ID (GUID?). 
+Reports can be submitted over various transports, e.g. HTTP, socket.io (WebSockets?, OSC?).
 
-Manager registers to get BrowserView assertions (active and inactive). Manager shows BrowserViews. 
+Initially everything is trusted :-)
 
-Manager allows ScreenTemplates and Scenes to be created and edited, including Frames and ScreenSplits. Allows ScreenApps to be created and edited. Allows ScreenApps to be associated with Frames. 
+### Implementation
 
-Manager allows ScreenTemplates to be applied to BrowserViews, and sends these and any changes in configuration to server to send to active BrowserViews.
+Initially a node.js server, running as a system service (cf musiccodes).
 
-Manager allows ScreenTemplates and Scenes to be saved and loaded. 
+Persistent logging (machine-readable) to file(s). Each line is a JSON-encoded log record.
+
+? Redis for short-term persistence and local coordination ?
+
+Angular.js for UI (just because I am already using it and time is short).
+
+Status server includes is own embedded agent :-) Introspects its own execution environment.
+
+## See also
+
+Some older notes on [using OWL ontologies](owlnotes.md).
+
+Some older notes on [screen configuration](screenmanager.md).
