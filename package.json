@@ -14,6 +14,8 @@
     "n3": "^0.8.1",
     "nools": "^0.4.1",
     "os-tmpdir": "^1.0.2",
+    "redis": "^2.7.1",
+    "socket.io": "^1.7.3",
     "uuid": "^3.0.1"
   },
   "devDependencies": {

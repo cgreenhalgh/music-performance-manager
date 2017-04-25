@@ -18,7 +18,13 @@ For now, see musiccodes for some of the set-up for Karma tests (`npm test`) - ne
 
 Run the server as
 ```
-node server.js
+node lib/server.js
 ```
 
-Open [http://localhost:3000](http://localhost:3000)
+Open [http://localhost:3003](http://localhost:3003)
+
+Run the node agent:
+```
+node lib/agent.js
+```
+
