@@ -28,3 +28,13 @@ Run the node agent:
 node lib/agent.js
 ```
 
+## interaction
+
+Socket.io: agent emits message mpm-report to server.
+
+HTTP: agent does POST to /api/1/mpm-report with JSON body.
+e.g.
+```
+curl -H "Content-Type: application/json" -X POST -d '{"@id":"urn:123","@type":"Test"}' http://localhost:3003/api/1/mpm-report
+```
+
