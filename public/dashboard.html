@@ -38,25 +38,59 @@
 		</div>
 	</nav>
 	
-	<div class="container">
+	<div id="selected" class="container">
 		<!-- <h1>Dashboard: Music Performance Manager</h1>  -->
 		<h2>Processes</h2>
 		<table class="table">
 			<thead>
 				<tr>
-					<td>@id</td>
-					<td>Name</td>
+					<td>Title</td>
+					<td>Type</td>
+					<td>IPs</td>
 					<td>Last report</td>
+					<td></td>
 				</tr>
 			</thead>
 			<tbody>
 				<tr ng-repeat="(id,report) in processes">
-					<td>{{id}}</td>
-					<td>{{report.info.name}}</td>
+					<td>{{report.title}}</td>
+					<td>{{report.processType}}</td>
+					<td>{{report.info.ips}}</td>
 					<td>{{report.datetime | date}}</td>
+					<td>
+						<button ng-click="showMore('Process',id,report)" class="button">More</button>
+					</td>
 				</tr>
 			</tbody>
 		</table>
+		<h2>Environments</h2>
+		<table class="table">
+			<thead>
+				<tr>
+					<td>Title</td>
+					<td>Type</td>
+					<td>IPs</td>
+					<td>Last report</td>
+					<td></td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="(id,report) in environments">
+					<td>{{report.title}}</td>
+					<td>{{report.environmentType}}</td>
+					<td>{{report.info.ips}}</td>
+					<td>{{report.datetime | date}}</td>
+					<td>
+						<button ng-click="showMore('Environment',id,report)" class="button">More</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="container" ng-if="selected!==null">
+		<h2>{{selected['@type']}}: {{selected.title}}</h2>
+		<panel><pre>{{selected | json: 4}}</pre></panel>
+		<p><button ng-click="clearSelected()">OK</button></p>
 	</div>
 </body>
 </html>

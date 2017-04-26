@@ -34,8 +34,8 @@ mod.factory('mpmAgentSocket', ['$rootScope', function ($rootScope) {
 	}
 }]);
 
-mod.factory('mpmAgent', ['mpmAgentSocket','DEFAULT_MPM_SERVER','$timeout','$location','getIPAddresses',
-					function(mpmAgentSocket,  DEFAULT_MPM_SERVER,  $timeout,  $location,  getIPAddresses) {
+mod.factory('mpmAgent', ['mpmAgentSocket','DEFAULT_MPM_SERVER','$timeout','$location','mpmGetIPAddresses',
+					function(mpmAgentSocket,  DEFAULT_MPM_SERVER,  $timeout,  $location,  mpmGetIPAddresses) {
 	var MPM_REPORT_INTERVAL = 10;
 	var MPM_REPORT_JITTER = 4;
 	var inited = false;
@@ -57,15 +57,25 @@ mod.factory('mpmAgent', ['mpmAgentSocket','DEFAULT_MPM_SERVER','$timeout','$loca
 		};
 	}
 	info.ips = [];
-	getIPAddresses(function(ip) {
-		info.ips.push(ip);
-		report();
+	mpmGetIPAddresses(function(ip) {
+		if (info.ips.indexOf(ip)<0) {
+			info.ips.push(ip);
+			report();
+		}
 	});
 	function connect(url) {
 		url = url || DEFAULT_MPM_SERVER;
 		if (sockets[url]===undefined) {
 			var socket = sockets[url] = mpmAgentSocket.connect(url);
-			report(socket);
+			socket.on('connect', function(err) {
+				console.log('agent socket connect');
+				socket.mpmIsConnected = true;
+				report(socket);
+			});
+			socket.on('disconnect', function(err) {
+				console.log('agent socket disconnect');
+				socket.mpmIsConnected = false;
+			});		
 		}
 	}	
 	connect(DEFAULT_MPM_SERVER);
@@ -76,7 +86,8 @@ mod.factory('mpmAgent', ['mpmAgentSocket','DEFAULT_MPM_SERVER','$timeout','$loca
 		var datetime =  (new Date()).toISOString();
 		// introspect...
 		info.url = $location.absUrl();
-		return { '@id': iri, '@type':'Process', info: info, datetime: datetime, expire: 2*MPM_REPORT_INTERVAL };
+		return { '@id': iri, '@type':'Process', processType: 'BrowserView', title: document.title, 
+			info: info, datetime: datetime, expire: 2*MPM_REPORT_INTERVAL };
 	}
 	var timeout = null;
 	function report(socket) {
@@ -87,13 +98,21 @@ mod.factory('mpmAgent', ['mpmAgentSocket','DEFAULT_MPM_SERVER','$timeout','$loca
 		if (socket===undefined) {
 			for (var url in sockets) {
 				var socket = sockets[url];
-				socket.emit('mpm-report', report);
+				if (socket.mpmIsConnected) {
+					socket.emit('mpm-report', report);
+				} else {
+					console.log('warning: mpm-agent cannot send report - unconnected');
+				}
 			}
 			if (timeout!==null)
 				$timeout.cancel(timeout);
 			timeout = $timeout(reportTimer, getDelay());
 		} else {
-			socket.emit('mpm-report', report);
+			if (socket.mpmIsConnected) {
+				socket.emit('mpm-report', report);
+			} else {
+				console.log('warning: mpm-agent cannot send report - unconnected');
+			}
 		}
 	};
 	function reportTimer() {
@@ -114,7 +133,7 @@ mod.factory('mpmAgent', ['mpmAgentSocket','DEFAULT_MPM_SERVER','$timeout','$loca
 	};
 }]);
 
-mod.factory('getIPAddresses', ['$window', '$q', '$rootScope', function($window, $q, $rootScope) {
+mod.factory('mpmGetIPAddresses', ['$window', '$q', '$rootScope', function($window, $q, $rootScope) {
 	return function(callback) { 
 		// get ip address
 		// see http://stackoverflow.com/questions/20194722/can-you-get-a-users-local-lan-ip-address-via-javascript
