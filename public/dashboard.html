@@ -1,16 +1,62 @@
 <!doctype html>
 <html lang="en" ng-app="mpm-dashboard">
   <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Dashboard - Music Performance Manager </title>
+	<link rel="stylesheet" href="/vendor/bootstrap/dist/css/bootstrap.min.css">
+  	<link rel="stylesheet" href="/css/dashboard.css">
     <script type="text/javascript" src="vendor/angular/angular.js"></script>
     <script type="text/javascript" src="vendor/n3-browser.js"></script>
 	<script src="/socket.io/socket.io.js"></script>
+	<script src="/vendor/jquery/dist/jquery.min.js"></script>
+	<script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="vendor/uuid.js"></script>    
 	<script type="text/javascript" src="js/mpm-rdf.js"></script>    
+	<script type="text/javascript" src="js/mpm-agent.js"></script>    
 	<script type="text/javascript" src="js/mpm-dashboard.js"></script>
 	<script type="text/javascript" src="js/muzicodes-socket.js"></script>
 	<script type="text/javascript" src="js/muzicodes-logging.js"></script>
   </head>
   <body ng-controller='DashboardController as dashboard'>
-    <h2>Dashboard: Music Performance Manager</h2>
-  </body>
+
+     	<nav class="navbar navbar-default">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+					aria-controls="navbar">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">MPM Dashboard</a>
+			</div>
+			<div id="navbar" class="navbar-collapse collapse">
+			</div>
+		</div>
+	</nav>
+	
+	<div class="container">
+		<!-- <h1>Dashboard: Music Performance Manager</h1>  -->
+		<h2>Processes</h2>
+		<table class="table">
+			<thead>
+				<tr>
+					<td>@id</td>
+					<td>Name</td>
+					<td>Last report</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="(id,report) in processes">
+					<td>{{id}}</td>
+					<td>{{report.info.name}}</td>
+					<td>{{report.datetime | date}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
 </html>
