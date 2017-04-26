@@ -6,3 +6,7 @@ sudo apt-get install redis-server
 # note: dir /var/lib/redis
 # note: port 6379
 # note: bind 127.0.0.1
+
+# python netifaces
+
+sudo easy_install netifaces
