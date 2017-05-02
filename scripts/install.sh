@@ -1,4 +1,5 @@
 # install
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # redis
 sudo apt-get install redis-server
@@ -10,3 +11,15 @@ sudo apt-get install redis-server
 # python netifaces
 
 sudo easy_install netifaces
+
+# upstart system
+sudo cp $DIR/mpm.conf /etc/init/
+if ! [ -z "$DIR" ]; then
+PDIR=$( dirname "$DIR" )
+sudo sed -i "s:/vagrant:$PDIR:g" /etc/init/mpm.conf
+fi
+
+if ! (status mpm | grep -q "^mpm start" > /dev/null); then
+sudo service mpm start
+fi
+

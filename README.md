@@ -12,6 +12,14 @@ Copyright (c) The University of Nottingham, 2016
 
 By Chris Greenhalgh, chris.greenhalgh@nottingham.ac.uk
 
+## install
+
+Note: will try to install upstart configuration for mpm as service "mpm".
+
+```
+./scripts/install.sh
+```
+
 ## Testing
 
 For now, see musiccodes for some of the set-up for Karma tests (`npm test`) - needs Chrome and local (not global) install of Karma (but that is a problem with links on Windows)
