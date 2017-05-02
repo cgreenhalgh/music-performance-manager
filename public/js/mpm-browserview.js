@@ -10,8 +10,8 @@ module.config(function($locationProvider) {
 		});
 });
 
-module.controller('BrowserviewController', ['$scope','socket','mpmAgent', '$sce', '$location',
-                                     function($scope,  socket,  mpmAgent, $sce, $location) {
+module.controller('BrowserviewController', ['$scope','socket','mpmAgent', '$sce', '$location', '$timeout',
+                                     function($scope,  socket,  mpmAgent, $sce, $location, $timeout) {
 	console.log('BrowserviewController');
 	
 	$scope.showconfig = true;
@@ -43,10 +43,13 @@ module.controller('BrowserviewController', ['$scope','socket','mpmAgent', '$sce'
 	});
 	
 	$scope.load = function() {
-		$scope.internalUrl = $sce.trustAsResourceUrl($scope.url);
-		console.log('load '+$scope.url+' -> '+$scope.internalUrl);
-		$scope.showconfig = false;
-		mpmAgent.configure({name:$scope.name, url: $scope.url});
+		$scope.internalUrl = '';
+		$timeout(function() {
+			$scope.internalUrl = $sce.trustAsResourceUrl($scope.url);
+			console.log('load '+$scope.url+' -> '+$scope.internalUrl);
+			$scope.showconfig = false;
+			mpmAgent.configure({name:$scope.name, url: $scope.url});
+		}, 0);
 	}
 	$('.iframe').on('load', function() {
 		console.log('loaded');
