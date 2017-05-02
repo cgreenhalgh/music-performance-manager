@@ -1,0 +1,52 @@
+/* browserview */
+body {
+	/*background-color: #eee;*/
+	margin: 0;
+	padding: 0;
+}
+
+.frameholder {
+	margin: 0;
+	padding: 0;
+	border-style: none;
+	position: fixed;
+	top: 2px;
+	right: 0px;
+	bottom: 0px;
+	left: 0px;
+}
+.configbar {
+	margin: 0;
+	padding: 0;
+	border-style: none;
+	position: fixed;
+	top: 0px;
+	right: 0px;
+	left: 0px;
+	background: #ccc;
+	height: 2px;
+	z-index: 10;
+}
+
+.iframe {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	border-style: none;
+	/*background: #000;*/
+	/*overflow: hidden;*/
+}
+
+.config {
+	background-color: #eee;
+	position: fixed;
+	top: -1000px;
+	left: 0px;
+	right: 0px;
+	z-index: 100;
+	
+}
+.config.showconfig {
+	top: 0px;
+}

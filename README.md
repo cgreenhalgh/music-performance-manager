@@ -20,6 +20,21 @@ Note: will try to install upstart configuration for mpm as service "mpm".
 ./scripts/install.sh
 ```
 
+## Usage
+
+### Dashboard
+
+[http://localhost:3003/dashboard.html](http://localhost:3003/dashboard.html)
+
+### Browserview
+
+Parameter 'n' = view name, 'u' = url, e.g.
+```
+http://localhost:3003/browserview.html?n=name&u=http:%2F%2Flocalhost:3000
+```
+
+Mouse to top of page to review config.
+
 ## Testing
 
 For now, see musiccodes for some of the set-up for Karma tests (`npm test`) - needs Chrome and local (not global) install of Karma (but that is a problem with links on Windows)
