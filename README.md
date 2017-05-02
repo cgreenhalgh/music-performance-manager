@@ -35,6 +35,8 @@ http://localhost:3003/browserview.html?n=name&u=http:%2F%2Flocalhost:3000
 
 Mouse to top of page to review config.
 
+Note: currently has no idea if iframe loaded successfully, or is navigated, etc. This would need cooperation from the contained page using something like HTML postMessage (or pages from the same domain).
+
 ## Testing
 
 For now, see musiccodes for some of the set-up for Karma tests (`npm test`) - needs Chrome and local (not global) install of Karma (but that is a problem with links on Windows)

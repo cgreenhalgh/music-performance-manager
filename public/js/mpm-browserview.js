@@ -48,7 +48,10 @@ module.controller('BrowserviewController', ['$scope','socket','mpmAgent', '$sce'
 		$scope.showconfig = false;
 		mpmAgent.configure({name:$scope.name, url: $scope.url});
 	}
-	
+	$('.iframe').on('load', function() {
+		console.log('loaded');
+		mpmAgent.configure({name:$scope.name, url: $scope.url, loaded: (new Date()).toISOString()});
+	});
 	if ($scope.url)
 		$scope.load();
 	else {
