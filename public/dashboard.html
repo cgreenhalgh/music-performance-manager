@@ -38,6 +38,41 @@
 		</div>
 	</nav>
 	
+	<div class="container">
+		<label>Template
+			<select id="template" name="template" ng-model="templateName">
+				<option value=""></option>
+				<option ng-repeat="template in templates" value="{{template.name}}">{{template.name}}</option>
+			</select>
+			<button ng-click="loadTemplate()">Load</button>
+		</label>
+		<span>{{template.name}}</span>
+	</div>
+
+	<div class="container" ng-if="expected.length>0">
+		<h2>Expected</h2>
+		<table class="table">
+			<thead>
+				<tr>
+					<td>Name</td>
+					<td>Matched</td>
+					<td>Feedback</td>
+					<td></td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="item in expected" ng-if="!item.hide" ng-class="{expectedError: item.status=='fatal' || item.status=='error', expectedWarning: item.status=='warning', expectedSubitem: item.expect.requires && item.expect.requires.length>0}">
+					<td>{{item.expect.name}}</td>
+					<td>{{item.matched}} {{item.matched ? '('+item.matches.length+')' : ''}}</td>
+					<td>{{!item.matched || item.tooMany ? item.expect.level+': ' : ''}}{{item.expect.feedback[item.matched ? (item.tooMany ? 'maxCardinality' : 'matched') : 'unmatched']}}</td>
+					<td>
+						<button ng-click="" class="button">...</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
 	<div id="selected" class="container">
 		<!-- <h1>Dashboard: Music Performance Manager</h1>  -->
 		<h2>Processes</h2>
@@ -90,6 +125,15 @@
 	<div class="container" ng-if="selected!==null">
 		<h2>{{selected['@type']}}: {{selected.title}}</h2>
 		<panel><pre>{{selected | json: 4}}</pre></panel>
+		<div>
+			<label>Test Point:</label>
+			<select ng-model="selectedTestPoint.id">
+				<option value=""></option>
+				<option ng-repeat="(name,point) in selected.testPoints" value="{{name}}">{{ point.name ? point.name : name }}</option>
+			</select>
+			<input type="text" ng-model="selectedTestPoint.value">
+			<button class="button" ng-click="setTestPointValue()">Set</button>
+		</div>
 		<p><button ng-click="clearSelected()">OK</button></p>
 	</div>
 </body>

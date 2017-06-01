@@ -3,3 +3,13 @@
 .processes {
 	border: 1px solid;
 }
+
+.expectedSubitem {
+	background: #eee;
+}
+.expectedError {
+	background: #f44;
+}
+.expectedWarning {
+	background: #f80;
+}
