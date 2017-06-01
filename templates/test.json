@@ -1,0 +1,48 @@
+{
+	"name":"Test",
+	"expect": [
+		{
+			"id": "musicodes.server",
+			"name": "Musicodes server",
+			"kind": "Report",
+			"level": "error",
+			"maxCardinality": 1,
+			"like": {
+				"processType": "Node.js",
+				"@type": "Process",
+				"title": "/vagrant/musiccodes/server/server.js"
+			},
+			"feedback":{
+				"unmatched":"The musicodes server doesn't seem to be running",
+				"maxCardinality":"There seems to be more than one musicodes server running!"
+			}
+		},
+		{
+			"id": "musicodes.player",
+			"name": "Musicodes player",
+			"kind": "Report",
+			"level": "error",
+			"maxCardinality": 1,
+			"like": {
+				"@type": "Process",
+				"processType": "BrowserView",
+				"title": "Muzicodes Player"
+			}
+		},
+		{
+			"id": "musicodes.experience",
+			"name": "Musicodes Climb! experience",
+			"kind": "Report",
+			"level": "error",
+			"requires": ["musicodes.player"],
+			"like": {
+				"config": {
+					"experience": {
+						"url": "/experiences/mkGameEngine2-out.json",
+						"ok": true
+					}
+				}
+			}
+		}
+	]
+}
