@@ -45,31 +45,67 @@
 			}
 		},
 		{
+			"id": "musicodes.performanceid",
+			"name": "performance ID",
+			"kind": "TestPoint",
+			"level": "information",
+			"testPoint": "performanceid",
+			"requires": ["musicodes.player"],
+			"show": true
+		},
+		{
 			"id": "musicodes.performanceid.test",
-			"name": "Test performance (ID)",
+			"name": "= Test performance",
 			"kind": "TestPoint",
 			"level": "warning",
 			"testPoint": "performanceid",
 			"requires": ["musicodes.player"],
-			"like": "9333e7a2-16a9-4352-a45a-f6f42d848cde"
+			"like": "9333e7a2-16a9-4352-a45a-f6f42d848cde",
+			"button": "9333e7a2-16a9-4352-a45a-f6f42d848cde"
 		},
 		{
 			"id": "musicodes.performanceid.first",
-			"name": "First performance (ID)",
+			"name": "= First performance",
 			"kind": "TestPoint",
 			"level": "warning",
 			"testPoint": "performanceid",
 			"requires": ["musicodes.player"],
-			"like": "be418821-436d-41c2-880c-058dffb57d91"
+			"like": "be418821-436d-41c2-880c-058dffb57d91",
+			"button": "be418821-436d-41c2-880c-058dffb57d91"
 		},
 		{
 			"id": "musicodes.performanceid.second",
-			"name": "Second performance (ID)",
+			"name": "= Second performance",
 			"kind": "TestPoint",
 			"level": "warning",
 			"testPoint": "performanceid",
 			"requires": ["musicodes.player"],
-			"like": "13a7fa70-ae91-4541-9526-fd3b332b585d"
+			"like": "13a7fa70-ae91-4541-9526-fd3b332b585d",
+			"button": "13a7fa70-ae91-4541-9526-fd3b332b585d"
+		},
+		{
+			"id": "meld.browserview",
+			"name": "Meld browser view",
+			"kind": "Report",
+			"level": "error",
+			"like": {
+				"@type": "Process",
+				"processType": "BrowserView",
+				"title": "Browserview - Music Performance Manager",
+				"config": {
+					"name": "meld",
+					"url": "http://localhost:3000"
+				}
+			}
+		},
+		{
+			"id": "meld.browserview.reload",
+			"name": "Reload MELD",
+			"kind": "TestPoint",
+			"level": "information",
+			"testPoint": "reload",
+			"requires": ["meld.browserview"],
+			"button": null
 		}
 	]
 }

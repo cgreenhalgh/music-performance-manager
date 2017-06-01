@@ -90,6 +90,10 @@ module.controller('DashboardController', ['$scope','socket','mpmAgent','$interva
 			checkExpected();
 		}
 	});
+	$scope.showExpected = function(expected) {
+		var report = expected.matches[0];
+		$scope.showMore(report['@type'], report['@id'], report)
+	};
 	$scope.showMore = function(type, id, value) {
 		console.log('showMore('+type+','+id+'): '+JSON.stringify(value));
 		$scope.selected = value;
@@ -155,6 +159,9 @@ module.controller('DashboardController', ['$scope','socket','mpmAgent','$interva
 	
 	function matches(pattern, value) {
 		var debug = false;
+		if (pattern===undefined)
+			// auto-match
+			return true;
 		if (pattern == value) {
 			if (debug) console.log('matches, ==, '+pattern+', '+value);
 			return true;
@@ -189,6 +196,8 @@ module.controller('DashboardController', ['$scope','socket','mpmAgent','$interva
 			expected.matches = [];
 			expected.hide = false;
 			expected.status = '';
+			expected.showValue = null;
+			expected.required = null;
 			if (!!expected.expect.requires && expected.expect.requires.length>0) {
 				var requiredOk = true;
 				for (var ri in expected.expect.requires) {
@@ -205,6 +214,7 @@ module.controller('DashboardController', ['$scope','socket','mpmAgent','$interva
 				}
 				// TODO multiple matches, multiple requires
 				var report = required[expected.expect.requires[0]].matches[0];
+				expected.required = report;
 				if (debug) console.log('check expected with requires '+JSON.stringify(expected)+' vs '+JSON.stringify(report));
 				if ('Report'==expected.expect.kind && !!expected.expect.like) {
 					if (matches(expected.expect.like, report)) {
@@ -221,6 +231,8 @@ module.controller('DashboardController', ['$scope','socket','mpmAgent','$interva
 					} else if (matches(expected.expect.like, $scope.monitoredTestPoints[point].value)) {
 						expected.matched = true;
 						expected.matches.push( $scope.monitoredTestPoints[point].value );
+						if (expected.expect.show)
+							expected.showValue = $scope.monitoredTestPoints[point].value;
 					}
 				}
 			}
@@ -253,9 +265,15 @@ module.controller('DashboardController', ['$scope','socket','mpmAgent','$interva
 	$scope.setTestPointValue = function() {
 		console.log('set test point value to '+$scope.selectedTestPoint.value);
 		if ($scope.selectedTestPoint.id && $scope.selected) {
-			socket.emit('setTestPoint', {iri: $scope.selected['@id'], id: $scope.selectedTestPoint.id, request: mpmAgent.getIri(), value: JSON.parse($scope.selectedTestPoint.value)});
+			var value = null;
+			if ($scope.selectedTestPoint.value)
+				value = JSON.parse($scope.selectedTestPoint.value);
+			socket.emit('setTestPoint', {iri: $scope.selected['@id'], id: $scope.selectedTestPoint.id, request: mpmAgent.getIri(), value: value});
 		}
-
+	}
+	$scope.setExpected = function(expected, value) {
+		console.log('setExpeced '+expected+' = '+value);
+		socket.emit('setTestPoint', {iri: expected.required['@id'], id: expected.expect.testPoint, request: mpmAgent.getIri(), value: value});		
 	}
 }]);
 

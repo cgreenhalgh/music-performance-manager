@@ -64,9 +64,11 @@
 				<tr ng-repeat="item in expected" ng-if="!item.hide" ng-class="{expectedError: item.status=='fatal' || item.status=='error', expectedWarning: item.status=='warning', expectedSubitem: item.expect.requires && item.expect.requires.length>0}">
 					<td>{{item.expect.name}}</td>
 					<td>{{item.matched}} {{item.matched ? '('+item.matches.length+')' : ''}}</td>
-					<td>{{!item.matched || item.tooMany ? item.expect.level+': ' : ''}}{{item.expect.feedback[item.matched ? (item.tooMany ? 'maxCardinality' : 'matched') : 'unmatched']}}</td>
 					<td>
-						<button ng-click="" class="button">...</button>
+					<button ng-if="item.expect.button!==undefined" ng-click="setExpected(item, item.expect.button)">Set {{item.button}}</button>
+					{{item.showValue}}{{!item.matched || item.tooMany ? item.expect.level+': ' : ''}}{{item.expect.feedback[item.matched ? (item.tooMany ? 'maxCardinality' : 'matched') : 'unmatched']}}</td>
+					<td>
+						<button ng-if="item.expect.kind=='Report' && item.matches.length>0" ng-click="showExpected(item)" class="button">More</button>
 					</td>
 				</tr>
 			</tbody>

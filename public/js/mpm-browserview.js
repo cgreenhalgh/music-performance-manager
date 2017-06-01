@@ -31,6 +31,10 @@ module.controller('BrowserviewController', ['$scope','socket','mpmAgent', '$sce'
 	});
 	
 	mpmAgent.init({name:'mpm-browserview'});
+	mpmAgent.addTestPoints({reload:{write:true, setter: function(name,value) {
+		console.log('Reload from test point');
+		$scope.load();
+	}}});
 	socket.on('hello', function(msg) {
 		console.log('received hello: ', msg);
 	});

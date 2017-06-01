@@ -13,6 +13,8 @@ Object with properties:
 - `kind` - `Report`, `TestPoint` (others TBD)
 - `testPoint` - test point ID (`TestPoint`)
 - `like` - object to match against report (etc.) value
+- `show` - boolean, default false, show value (currently only for TestPoint)
+- `button` - value to set when requested (TestPoint only)
 - `level` - `fatal`, `error`, `warning`, `info`, `debug`
 - `name` - name/title
 - `description`
