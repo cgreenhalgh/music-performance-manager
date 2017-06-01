@@ -20,6 +20,7 @@ module.controller('DashboardController', ['$scope','socket','mpmAgent','$interva
 	$scope.template = {};
 	$scope.expected = [];
 	$scope.selectedTestPoint = {id:'', value: ''};
+	$scope.monitoredTestPoints = {};
 	
 	function expire(reports) {
 		var now = (new Date()).getTime();
@@ -77,11 +78,16 @@ module.controller('DashboardController', ['$scope','socket','mpmAgent','$interva
 	
 	socket.on('monitorTestPointValue', function(msg) {
 		console.log('monitorTestPointValue', msg);
-		// TODO
-		if (msg.iri==$scope.selected['@id'] && msg.id==$scope.selectedTestPoint.id) {
+		if ($scope.selected && msg.iri==$scope.selected['@id'] && msg.id==$scope.selectedTestPoint.id) {
 			$scope.selectedTestPoint.value = JSON.stringify(msg.value);
 		} else {
-			console.log('ignore monitorTestPointValue '+msg.iri+' '+msg.id);
+			//console.log('ignore monitorTestPointValue '+msg.iri+' '+msg.id);
+		}
+		var point = msg.iri+'/'+msg.id;
+		if ($scope.monitoredTestPoints[point]!==undefined) {
+			$scope.monitoredTestPoints[point].value = msg.value;
+			console.log('update to monitor value '+point);
+			checkExpected();
 		}
 	});
 	$scope.showMore = function(type, id, value) {
@@ -148,29 +154,31 @@ module.controller('DashboardController', ['$scope','socket','mpmAgent','$interva
 	});
 	
 	function matches(pattern, value) {
+		var debug = false;
 		if (pattern == value) {
-			console.log('matches, ==, '+pattern+', '+value);
+			if (debug) console.log('matches, ==, '+pattern+', '+value);
 			return true;
 		}
 		if (typeof(pattern)=='object') {
 			for (var fname in pattern) {
 				var fvalue = pattern[fname];
-				console.log('matches, object, field '+fname+'='+fvalue+' vs '+value[fname]);
+				if (debug) console.log('matches, object, field '+fname+'='+fvalue+' vs '+value[fname]);
 				if (value[fname]===undefined) {
-					console.log('matches, object, field '+fname+' undefined in '+value);
+					if (debug) console.log('matches, object, field '+fname+' undefined in '+value);
 					return false;
 				}
 				if (!matches(fvalue, value[fname])) {
 					return false;
 				}
 			}
-			console.log('matches, object, true, '+pattern+', '+value);
+			if (debug) console.log('matches, object, true, '+pattern+', '+value);
 			return true;
 		}
-		console.log('matches, not equal and not object, '+pattern+', '+value);
+		if (debug) console.log('matches, not equal and not object, '+pattern+', '+value);
 		return false;
 	};
 	function checkExpected() {
+		var debug = false;
 		console.log('check expected ('+$scope.expected.length+')');
 		// reset?
 		var required = {};
@@ -197,14 +205,27 @@ module.controller('DashboardController', ['$scope','socket','mpmAgent','$interva
 				}
 				// TODO multiple matches, multiple requires
 				var report = required[expected.expect.requires[0]].matches[0];
-				console.log('check expected with requires '+JSON.stringify(expected)+' vs '+JSON.stringify(report));
-				if (matches(expected.expect.like, report)) {
-					expected.matched = true;
-					expected.matches.push( report );
+				if (debug) console.log('check expected with requires '+JSON.stringify(expected)+' vs '+JSON.stringify(report));
+				if ('Report'==expected.expect.kind && !!expected.expect.like) {
+					if (matches(expected.expect.like, report)) {
+						expected.matched = true;
+						expected.matches.push( report );
+					}
+				} else if ('TestPoint'==expected.expect.kind && expected.expect.testPoint) {
+					// monitor...
+					var point = report['@id']+'/'+expected.expect.testPoint;
+					if ($scope.monitoredTestPoints[point]===undefined) {
+						console.log('monitor '+point);
+						$scope.monitoredTestPoints[point] = {};
+						monitor(report['@id'], expected.expect.testPoint, true);
+					} else if (matches(expected.expect.like, $scope.monitoredTestPoints[point].value)) {
+						expected.matched = true;
+						expected.matches.push( $scope.monitoredTestPoints[point].value );
+					}
 				}
 			}
 			else if ('Report'==expected.expect.kind && !!expected.expect.like) {
-				console.log('check expected Report '+expected);
+				if (debug) console.log('check expected Report '+expected);
 				for (var pi in $scope.processes) {
 					var report = $scope.processes[pi];
 					if(matches(expected.expect.like, report)) {
@@ -218,7 +239,7 @@ module.controller('DashboardController', ['$scope','socket','mpmAgent','$interva
 				console.log('unhandled expected kind '+expected.expect.kind+' ('+expected+')');
 			}
 			if (!!expected.expect.maxCardinality && expected.matches.length>expected.expect.maxCardinality) {
-				console.log('too many matches for '+expected);
+				if (debug) console.log('too many matches for '+expected);
 				expected.tooMany = true;
 				expected.status = expected.expect.level;
 			} else if (!expected.matched) {

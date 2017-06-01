@@ -9,8 +9,9 @@ Object with properties:
 
 `Expected` object, with properties:
 - `id` - string, for cross-reference
-- `requires` - array of IDs of pre-requisites
-- `kind` - `Report` (others TBD)
+- `requires` - array of IDs of pre-requisites (note, TestPoint MUST have on to identify process)
+- `kind` - `Report`, `TestPoint` (others TBD)
+- `testPoint` - test point ID (`TestPoint`)
 - `like` - object to match against report (etc.) value
 - `level` - `fatal`, `error`, `warning`, `info`, `debug`
 - `name` - name/title

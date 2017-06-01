@@ -43,6 +43,33 @@
 					}
 				}
 			}
+		},
+		{
+			"id": "musicodes.performanceid.test",
+			"name": "Test performance (ID)",
+			"kind": "TestPoint",
+			"level": "warning",
+			"testPoint": "performanceid",
+			"requires": ["musicodes.player"],
+			"like": "9333e7a2-16a9-4352-a45a-f6f42d848cde"
+		},
+		{
+			"id": "musicodes.performanceid.first",
+			"name": "First performance (ID)",
+			"kind": "TestPoint",
+			"level": "warning",
+			"testPoint": "performanceid",
+			"requires": ["musicodes.player"],
+			"like": "be418821-436d-41c2-880c-058dffb57d91"
+		},
+		{
+			"id": "musicodes.performanceid.second",
+			"name": "Second performance (ID)",
+			"kind": "TestPoint",
+			"level": "warning",
+			"testPoint": "performanceid",
+			"requires": ["musicodes.player"],
+			"like": "13a7fa70-ae91-4541-9526-fd3b332b585d"
 		}
 	]
 }
