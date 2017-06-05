@@ -93,10 +93,28 @@
 				"processType": "BrowserView",
 				"title": "Browserview - Music Performance Manager",
 				"config": {
-					"name": "meld",
-					"url": "http://localhost:3000"
+					"name": "meld"
 				}
 			}
+		},
+		{
+			"id": "meld.browserview.url",
+			"name": "URL",
+			"kind": "TestPoint",
+			"level": "information",
+			"testPoint": "url",
+			"requires": ["meld.browserview"],
+			"show": true
+		},
+		{
+			"id": "meld.browserview.climburl",
+			"name": "= start the climb",
+			"kind": "TestPoint",
+			"level": "warning",
+			"testPoint": "url",
+			"requires": ["meld.browserview"],
+			"like": "http://127.0.0.1:5000/startTheClimb",
+			"button": "http://127.0.0.1:5000/startTheClimb"
 		},
 		{
 			"id": "meld.browserview.reload",

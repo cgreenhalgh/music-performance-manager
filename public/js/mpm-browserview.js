@@ -34,6 +34,11 @@ module.controller('BrowserviewController', ['$scope','socket','mpmAgent', '$sce'
 	mpmAgent.addTestPoints({reload:{write:true, setter: function(name,value) {
 		console.log('Reload from test point');
 		$scope.load();
+	}},
+	url:{name:'URL', read:true, write:true, monitor:true, setter: function(id,value) {
+		console.log('set url through test point to '+value);
+		$scope.url = value;
+		$scope.load();
 	}}});
 	socket.on('hello', function(msg) {
 		console.log('received hello: ', msg);
@@ -53,6 +58,7 @@ module.controller('BrowserviewController', ['$scope','socket','mpmAgent', '$sce'
 			console.log('load '+$scope.url+' -> '+$scope.internalUrl);
 			$scope.showconfig = false;
 			mpmAgent.configure({name:$scope.name, url: $scope.url});
+			mpmAgent.setTestPointValues({url: $scope.url});
 		}, 0);
 	}
 	$('.iframe').on('load', function() {
