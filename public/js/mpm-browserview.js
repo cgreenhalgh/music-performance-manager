@@ -1,7 +1,7 @@
 /* main ... */
 console.log('browserview...');
 
-var module = angular.module('mpm-browserview', ['mpm-rdf', 'muzicodes.logging', 'muzicodes.socket', 'mpm-agent']);
+var module = angular.module('mpm-browserview', ['mpm-rdf', 'muzicodes.logging', 'muzicodes.socket', 'mpm-agent', 'mpm-loguse']);
 
 module.config(function($locationProvider) {
 	  $locationProvider.html5Mode({
@@ -10,8 +10,8 @@ module.config(function($locationProvider) {
 		});
 });
 
-module.controller('BrowserviewController', ['$scope','socket','mpmAgent', '$sce', '$location', '$timeout',
-                                     function($scope,  socket,  mpmAgent, $sce, $location, $timeout) {
+module.controller('BrowserviewController', ['$scope','socket','mpmAgent', '$sce', '$location', '$timeout', 'mpmLoguse',
+                                     function($scope,  socket,  mpmAgent, $sce, $location, $timeout, mpmLoguse) {
 	console.log('BrowserviewController');
 	
 	$scope.showconfig = true;
@@ -59,7 +59,7 @@ module.controller('BrowserviewController', ['$scope','socket','mpmAgent', '$sce'
 			$scope.showconfig = false;
 			mpmAgent.configure({name:$scope.name, url: $scope.url});
 			mpmAgent.setTestPointValues({url: $scope.url});
-		}, 0);
+		}, 10);
 	}
 	$('.iframe').on('load', function() {
 		console.log('loaded');
