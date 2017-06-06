@@ -1,8 +1,9 @@
 /* browserview */
 body {
-	/*background-color: #eee;*/
+	/*background-color: #000;*/
 	margin: 0;
 	padding: 0;
+	height: 2px;
 }
 
 .frameholder {
@@ -23,7 +24,7 @@ body {
 	top: 0px;
 	right: 0px;
 	left: 0px;
-	background: #ccc;
+	background: #000;
 	height: 2px;
 	z-index: 10;
 }
@@ -39,13 +40,12 @@ body {
 }
 
 .config {
-	background-color: #eee;
 	position: fixed;
 	top: -1000px;
 	left: 0px;
 	right: 0px;
 	z-index: 100;
-	
+	background-color: #eee;
 }
 .config.showconfig {
 	top: 0px;

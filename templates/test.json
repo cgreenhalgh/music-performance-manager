@@ -117,6 +117,16 @@
 			"button": "http://127.0.0.1:5000/startTheClimb"
 		},
 		{
+			"id": "meld.browserview.climburl.load",
+			"name": "= auto-start start the climb",
+			"kind": "TestPoint",
+			"level": "warning",
+			"testPoint": "url",
+			"requires": ["meld.browserview"],
+			"like": "http://127.0.0.1:5000/startTheClimb?load",
+			"button": "http://127.0.0.1:5000/startTheClimb?load"
+		},
+		{
 			"id": "meld.browserview.reload",
 			"name": "Reload MELD",
 			"kind": "TestPoint",
