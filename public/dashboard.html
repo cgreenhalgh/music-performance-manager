@@ -46,7 +46,9 @@
 			</select>
 			<button ng-click="loadTemplate()">Load</button>
 		</label>
-		<span>{{template.name}}</span>
+		<span>{{template.name}}</span><br>
+		<label>Variables</label>
+		<label ng-repeat="(name,value) in variables">{{name}}:<input type="text" ng-model="value.value"></label>
 	</div>
 
 	<div class="container" ng-if="expected.length>0">

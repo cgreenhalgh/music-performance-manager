@@ -24,6 +24,8 @@ Object with properties:
   - `unmatcehd` - text (feedback)
   - `maxCardinality` - text
 
+Optional variable replacement expressions, e.g. "{{ip}}". To be developed more in future...
+
 ## Reports
 
 Send periodically by reporting agents to indicate the current state of (e.g.) a process or execution environment.

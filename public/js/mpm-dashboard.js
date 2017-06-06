@@ -21,6 +21,7 @@ module.controller('DashboardController', ['$scope','socket','mpmAgent','$interva
 	$scope.expected = [];
 	$scope.selectedTestPoint = {id:'', value: ''};
 	$scope.monitoredTestPoints = {};
+	$scope.variables = {'ip':{value:'127.0.0.1'}};
 	
 	function expire(reports) {
 		var now = (new Date()).getTime();
@@ -125,12 +126,32 @@ module.controller('DashboardController', ['$scope','socket','mpmAgent','$interva
 			}
 		}
 	});
+	function replaceVariables(data) {
+		if (typeof(data)=='object') {
+			for (var key in data) {
+				var value = data[key];
+				if (typeof(value)=='string') {
+					for (var name in $scope.variables) {
+						if (value=='{{'+name+'}}') {
+							value =  $scope.variables[name].value;
+							break;
+						}
+						value = value.replace('{{'+name+'}}', $scope.variables[name].value);
+					}
+					data[key] = value;
+				} else {
+					replaceVariables(value);
+				}
+			}
+		}
+	}
 	$scope.loadTemplate = function() {
 		var name = $scope.templateName;
 		console.log('load template '+name);
 		// TODO
 		$http.get('/templates/'+name).then(function(res) {
 			console.log('loaded template '+name+': '+JSON.stringify(res.data));
+			replaceVariables(res.data);
 			$scope.template = res.data;
 			var expected = [];
 			for (var ei in $scope.template.expect) {
