@@ -38,7 +38,7 @@
 			"like": {
 				"config": {
 					"experience": {
-						"url": "/experiences/mkGameEngine2-out.json",
+						"url": "/experiences/mkGameEngine-out.json",
 						"ok": true
 					}
 				}
@@ -85,7 +85,7 @@
 		},
 		{
 			"id": "meld.browserview",
-			"name": "Meld browser view",
+			"name": "'meld' browser view",
 			"kind": "Report",
 			"level": "error",
 			"like": {
@@ -134,6 +134,49 @@
 			"testPoint": "reload",
 			"requires": ["meld.browserview"],
 			"button": null
+		},
+				{
+			"id": "visuals.browserview",
+			"name": "'visuals' browser view",
+			"kind": "Report",
+			"level": "error",
+			"like": {
+				"@type": "Process",
+				"processType": "BrowserView",
+				"title": "Browserview - Music Performance Manager",
+				"config": {
+					"name": "visuals"
+				}
+			}
+		},
+		{
+			"id": "visuals.browserview.url",
+			"name": "URL",
+			"kind": "TestPoint",
+			"level": "information",
+			"testPoint": "url",
+			"requires": ["visuals.browserview"],
+			"show": true
+		},
+		{
+			"id": "visuals.browserview.climburl",
+			"name": "= Climb visuals (NB fix IP address!)",
+			"kind": "TestPoint",
+			"level": "warning",
+			"testPoint": "url",
+			"requires": ["visuals.browserview"],
+			"like": "http://localhost:3000/climbview.html#?config=%2Fcontent%2FmkGameEngine-view.json",
+			"button": "http://localhost:3000/climbview.html#?config=%2Fcontent%2FmkGameEngine-view.json"
+		},
+		{
+			"id": "visuals.browserview.climburl",
+			"name": "= Climb visuals (NB fix IP address!) - test",
+			"kind": "TestPoint",
+			"level": "warning",
+			"testPoint": "url",
+			"requires": ["visuals.browserview"],
+			"like": "http://localhost:3000/climbview.html#?config=%2Fcontent%2FmkGameEngine-view.json&test",
+			"button": "http://localhost:3000/climbview.html#?config=%2Fcontent%2FmkGameEngine-view.json&test"
 		}
 	]
 }
