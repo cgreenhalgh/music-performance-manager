@@ -52,14 +52,14 @@ module.controller('BrowserviewController', ['$scope','socket','mpmAgent', '$sce'
 	});
 	
 	$scope.load = function() {
-		$scope.internalUrl = '';
+		$scope.internalUrl = $sce.trustAsResourceUrl('data:text/plain,');
 		$timeout(function() {
 			$scope.internalUrl = $sce.trustAsResourceUrl($scope.url);
 			console.log('load '+$scope.url+' -> '+$scope.internalUrl);
 			$scope.showconfig = false;
 			mpmAgent.configure({name:$scope.name, url: $scope.url});
 			mpmAgent.setTestPointValues({url: $scope.url});
-		}, 10);
+		}, 500);
 	}
 	$('.iframe').on('load', function() {
 		console.log('loaded');
