@@ -1,0 +1,182 @@
+{
+	"name":"Test",
+	"expect": [
+		{
+			"id": "musicodes.server",
+			"name": "Musicodes server",
+			"kind": "Report",
+			"level": "error",
+			"maxCardinality": 1,
+			"like": {
+				"processType": "Node.js",
+				"@type": "Process",
+				"title": "/vagrant/musiccodes/server/server.js"
+			},
+			"feedback":{
+				"unmatched":"The musicodes server doesn't seem to be running",
+				"maxCardinality":"There seems to be more than one musicodes server running!"
+			}
+		},
+		{
+			"id": "musicodes.player",
+			"name": "Musicodes player",
+			"kind": "Report",
+			"level": "error",
+			"maxCardinality": 1,
+			"like": {
+				"@type": "Process",
+				"processType": "BrowserView",
+				"title": "Muzicodes Player"
+			}
+		},
+		{
+			"id": "musicodes.experience",
+			"name": "Musicodes Climb! experience",
+			"kind": "Report",
+			"level": "error",
+			"requires": ["musicodes.player"],
+			"like": {
+				"config": {
+					"experience": {
+						"url": "/experiences/mkGameEngine-out.json",
+						"ok": true
+					}
+				}
+			}
+		},
+		{
+			"id": "musicodes.performanceid",
+			"name": "performance ID",
+			"kind": "TestPoint",
+			"level": "information",
+			"testPoint": "performanceid",
+			"requires": ["musicodes.player"],
+			"show": true
+		},
+		{
+			"id": "musicodes.performanceid.test",
+			"name": "= Dress rehearsal (Premiere)",
+			"kind": "TestPoint",
+			"level": "warning",
+			"testPoint": "performanceid",
+			"requires": ["musicodes.player"],
+			"like": "9333e7a2-16a9-4352-a45a-f6f42d848cde",
+			"button": "9333e7a2-16a9-4352-a45a-f6f42d848cde"
+		},
+		{
+			"id": "musicodes.performanceid.first",
+			"name": "= First performance (Premiere)",
+			"kind": "TestPoint",
+			"level": "warning",
+			"testPoint": "performanceid",
+			"requires": ["musicodes.player"],
+			"like": "be418821-436d-41c2-880c-058dffb57d91",
+			"button": "be418821-436d-41c2-880c-058dffb57d91"
+		},
+		{
+			"id": "musicodes.performanceid.second",
+			"name": "= Second performance (Premiere)",
+			"kind": "TestPoint",
+			"level": "warning",
+			"testPoint": "performanceid",
+			"requires": ["musicodes.player"],
+			"like": "13a7fa70-ae91-4541-9526-fd3b332b585d",
+			"button": "13a7fa70-ae91-4541-9526-fd3b332b585d"
+		},
+		{
+			"id": "meld.browserview",
+			"name": "'meld' browser view",
+			"kind": "Report",
+			"level": "error",
+			"like": {
+				"@type": "Process",
+				"processType": "BrowserView",
+				"title": "Browserview - Music Performance Manager",
+				"config": {
+					"name": "meld"
+				}
+			}
+		},
+		{
+			"id": "meld.browserview.url",
+			"name": "URL",
+			"kind": "TestPoint",
+			"level": "information",
+			"testPoint": "url",
+			"requires": ["meld.browserview"],
+			"show": true
+		},
+		{
+			"id": "meld.browserview.climburl",
+			"name": "= start the climb",
+			"kind": "TestPoint",
+			"level": "warning",
+			"testPoint": "url",
+			"requires": ["meld.browserview"],
+			"like": "http://127.0.0.1:5000/startTheClimb",
+			"button": "http://127.0.0.1:5000/startTheClimb"
+		},
+		{
+			"id": "meld.browserview.climburl.load",
+			"name": "= auto-start start the climb",
+			"kind": "TestPoint",
+			"level": "warning",
+			"testPoint": "url",
+			"requires": ["meld.browserview"],
+			"like": "http://127.0.0.1:5000/startTheClimb?load",
+			"button": "http://127.0.0.1:5000/startTheClimb?load"
+		},
+		{
+			"id": "meld.browserview.reload",
+			"name": "Reload MELD",
+			"kind": "TestPoint",
+			"level": "information",
+			"testPoint": "reload",
+			"requires": ["meld.browserview"],
+			"button": null
+		},
+				{
+			"id": "visuals.browserview",
+			"name": "'visuals' browser view",
+			"kind": "Report",
+			"level": "error",
+			"like": {
+				"@type": "Process",
+				"processType": "BrowserView",
+				"title": "Browserview - Music Performance Manager",
+				"config": {
+					"name": "visuals"
+				}
+			}
+		},
+		{
+			"id": "visuals.browserview.url",
+			"name": "URL",
+			"kind": "TestPoint",
+			"level": "information",
+			"testPoint": "url",
+			"requires": ["visuals.browserview"],
+			"show": true
+		},
+		{
+			"id": "visuals.browserview.climburl",
+			"name": "= Climb visuals (NB fix IP address!)",
+			"kind": "TestPoint",
+			"level": "warning",
+			"testPoint": "url",
+			"requires": ["visuals.browserview"],
+			"like": "http://{{ip}}:3000/climbview.html#?config=%2Fcontent%2FmkGameEngine-view.json",
+			"button": "http://{{ip}}:3000/climbview.html#?config=%2Fcontent%2FmkGameEngine-view.json"
+		},
+		{
+			"id": "visuals.browserview.climburl",
+			"name": "= Climb visuals (NB fix IP address!) - test",
+			"kind": "TestPoint",
+			"level": "warning",
+			"testPoint": "url",
+			"requires": ["visuals.browserview"],
+			"like": "http://{{ip}}:3000/climbview.html#?config=%2Fcontent%2FmkGameEngine-view.json&test",
+			"button": "http://{{ip}}:3000/climbview.html#?config=%2Fcontent%2FmkGameEngine-view.json&test"
+		}
+	]
+}

@@ -55,33 +55,43 @@
 		},
 		{
 			"id": "musicodes.performanceid.test",
-			"name": "= Test performance",
+			"name": "= Test performance (AM)",
 			"kind": "TestPoint",
 			"level": "warning",
 			"testPoint": "performanceid",
 			"requires": ["musicodes.player"],
-			"like": "9333e7a2-16a9-4352-a45a-f6f42d848cde",
-			"button": "9333e7a2-16a9-4352-a45a-f6f42d848cde"
+			"like": "de3250be-9b54-4a7b-9675-fd145fc2561c",
+			"button": "de3250be-9b54-4a7b-9675-fd145fc2561c"
+		},
+		{
+			"id": "musicodes.performanceid.dress",
+			"name": "= Dress rehearsal (AM)",
+			"kind": "TestPoint",
+			"level": "warning",
+			"testPoint": "performanceid",
+			"requires": ["musicodes.player"],
+			"like": "e888ea0f-8c81-48a8-8462-bc98dd04f495",
+			"button": "e888ea0f-8c81-48a8-8462-bc98dd04f495"
 		},
 		{
 			"id": "musicodes.performanceid.first",
-			"name": "= First performance",
+			"name": "= First performance (AM)",
 			"kind": "TestPoint",
 			"level": "warning",
 			"testPoint": "performanceid",
 			"requires": ["musicodes.player"],
-			"like": "be418821-436d-41c2-880c-058dffb57d91",
-			"button": "be418821-436d-41c2-880c-058dffb57d91"
+			"like": "f01a5d26-6569-4879-9aef-58334110c307",
+			"button": "f01a5d26-6569-4879-9aef-58334110c307"
 		},
 		{
 			"id": "musicodes.performanceid.second",
-			"name": "= Second performance",
+			"name": "= Second performance (AM)",
 			"kind": "TestPoint",
 			"level": "warning",
 			"testPoint": "performanceid",
 			"requires": ["musicodes.player"],
-			"like": "13a7fa70-ae91-4541-9526-fd3b332b585d",
-			"button": "13a7fa70-ae91-4541-9526-fd3b332b585d"
+			"like": "438d52bd-935e-4ff1-a5f1-cd60226a5950",
+			"button": "438d52bd-935e-4ff1-a5f1-cd60226a5950"
 		},
 		{
 			"id": "meld.browserview",
