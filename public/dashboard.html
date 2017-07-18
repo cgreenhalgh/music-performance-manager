@@ -67,7 +67,8 @@
 					<td>{{item.expect.name}}</td>
 					<td>{{item.matched}} {{item.matched ? '('+item.matches.length+')' : ''}}</td>
 					<td>
-					<button ng-if="item.expect.button!==undefined" ng-click="setExpected(item, item.expect.button)">Set {{item.button}}</button>
+					<button ng-if="item.expect.button!==undefined" ng-click="setExpected(item, item.expect.button)">Set {{item.expect.button}}</button>
+					<button ng-if="item.expect.post!==undefined" ng-disabled="!item.matched" ng-click="post(item, item.expect.post)">Post to {{item.expect.post}}</button>
 					{{item.showValue}}{{!item.matched || item.tooMany ? item.expect.level+': ' : ''}}{{item.expect.feedback[item.matched ? (item.tooMany ? 'maxCardinality' : 'matched') : 'unmatched']}}</td>
 					<td>
 						<button ng-if="item.expect.kind=='Report' && item.matches.length>0" ng-click="showExpected(item)" class="button">More</button>

@@ -18,6 +18,16 @@
 			}
 		},
 		{
+			"id": "musicodes.server.log",
+			"name": "Musicodes log",
+			"kind": "File",
+			"level": "information",
+			"fileTag": "room:default",
+			"requires": ["musicodes.server"],
+			"post": "http://localhost:3003/api/1/testPost",
+			"show": true
+		},
+		{
 			"id": "musicodes.player",
 			"name": "Musicodes player",
 			"kind": "Report",

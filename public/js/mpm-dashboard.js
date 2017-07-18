@@ -91,6 +91,14 @@ module.controller('DashboardController', ['$scope','socket','mpmAgent','$interva
 			checkExpected();
 		}
 	});
+	socket.on('postResponse', function(msg) {
+		var text = 'POST response: '+msg.status;
+		console.log(text, msg);
+		alert(text);
+	});
+	socket.on('alert', function(msg) {
+		console.log('alert', msg);
+	});
 	$scope.showExpected = function(expected) {
 		var report = expected.matches[0];
 		$scope.showMore(report['@type'], report['@id'], report)
@@ -255,6 +263,16 @@ module.controller('DashboardController', ['$scope','socket','mpmAgent','$interva
 						if (expected.expect.show)
 							expected.showValue = $scope.monitoredTestPoints[point].value;
 					}
+				} else if ('File'==expected.expect.kind && expected.expect.fileTag && !!report.files) {
+					var file = report.files.filter(function(f){ return f.tag==expected.expect.fileTag; })
+						.sort(function(a,b){ return a.created==null ? 1 : -a.created.localeCompare(b.created); })
+						.find(function() { return true; });
+					if (file!==undefined) {
+						expected.matched = true;
+						expected.matches.push( file );
+						if (expected.expect.show)
+							expected.showValue = file.path;
+					}
 				}
 			}
 			else if ('Report'==expected.expect.kind && !!expected.expect.like) {
@@ -295,6 +313,10 @@ module.controller('DashboardController', ['$scope','socket','mpmAgent','$interva
 	$scope.setExpected = function(expected, value) {
 		console.log('setExpeced '+expected+' = '+value);
 		socket.emit('setTestPoint', {iri: expected.required['@id'], id: expected.expect.testPoint, request: mpmAgent.getIri(), value: value});		
+	}
+	$scope.post = function(expected, url) {
+		console.log('post '+expected+' to '+url);
+		socket.emit('post', {iri: expected.required['@id'], path: expected.matches[0].path, url: url, request: mpmAgent.getIri() });		
 	}
 }]);
 
