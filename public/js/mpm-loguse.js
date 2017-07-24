@@ -115,7 +115,16 @@ loguse.factory('mpmLoguse', ['socket', 'clientid', '$interval', function (socket
 			}
 		},
 		log: function(data) {
+		    var time = (new Date()).getTime();
+		    data.clienttime = time;
+		    // clientid and userid added by server
 			socket.emit('loguse.client.log', data);
+		},
+		view: function(path, info) {
+		    var time = (new Date()).getTime();
+			var data = { clienttime: time, path: path, info: info };
+		    // clientid and userid added by server
+			socket.emit('loguse.client.view', data);
 		}
 	};
 }]);

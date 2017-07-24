@@ -59,6 +59,7 @@ module.controller('BrowserviewController', ['$scope','socket','mpmAgent', '$sce'
 			$scope.showconfig = false;
 			mpmAgent.configure({name:$scope.name, url: $scope.url});
 			mpmAgent.setTestPointValues({url: $scope.url});
+			mpmLoguse.view($scope.url, {});
 		}, 500);
 	}
 	$('.iframe').on('load', function() {
