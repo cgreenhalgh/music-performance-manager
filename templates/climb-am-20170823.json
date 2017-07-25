@@ -24,7 +24,7 @@
 			"level": "information",
 			"fileTag": "room:default",
 			"requires": ["musicodes.server"],
-			"post": "http://localhost:3003/api/1/testPost",
+			"post": "http://uploader:changeme@128.243.22.74:4201/api/1/processlog",
 			"show": true
 		},
 		{
@@ -185,8 +185,8 @@
 			"level": "warning",
 			"testPoint": "url",
 			"requires": ["visuals.browserview"],
-			"like": "http://{{ip}}:3000/climbview.html#?config=%2Fcontent%2FmkGameEngine-view.json",
-			"button": "http://{{ip}}:3000/climbview.html#?config=%2Fcontent%2FmkGameEngine-view.json"
+			"like": "http://localhost:3000/climbview.html#?config=%2Fcontent%2FmkGameEngine-view.json&sio=http:%2F%2F{{ip}}:3000",
+			"button": "http://localhost:3000/climbview.html#?config=%2Fcontent%2FmkGameEngine-view.json&sio=http:%2F%2F{{ip}}:3000"
 		},
 		{
 			"id": "visuals.browserview.climburl",
@@ -195,8 +195,8 @@
 			"level": "warning",
 			"testPoint": "url",
 			"requires": ["visuals.browserview"],
-			"like": "http://{{ip}}:3000/climbview.html#?config=%2Fcontent%2FmkGameEngine-view.json&test",
-			"button": "http://{{ip}}:3000/climbview.html#?config=%2Fcontent%2FmkGameEngine-view.json&test"
+			"like": "http://localhost:3000/climbview.html#?config=%2Fcontent%2FmkGameEngine-view.json&sio=http:%2F%2F{{ip}}:3000&test",
+			"button": "http://localhost:3000/climbview.html#?config=%2Fcontent%2FmkGameEngine-view.json&sio=http:%2F%2F{{ip}}:3000&test"
 		}
 	]
 }
