@@ -144,7 +144,7 @@ module.controller('DashboardController', ['$scope','socket','mpmAgent','$interva
 							value =  $scope.variables[name].value;
 							break;
 						}
-						value = value.replace('{{'+name+'}}', $scope.variables[name].value);
+						value = value.replace(RegExp('\{\{'+name+'\}\}', 'g'), $scope.variables[name].value);
 					}
 					data[key] = value;
 				} else {

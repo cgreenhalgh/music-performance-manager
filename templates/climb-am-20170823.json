@@ -185,8 +185,8 @@
 			"level": "warning",
 			"testPoint": "url",
 			"requires": ["visuals.browserview"],
-			"like": "http://localhost:3000/climbview.html#?config=%2Fcontent%2FmkGameEngine-view.json&sio=http:%2F%2F{{ip}}:3000",
-			"button": "http://localhost:3000/climbview.html#?config=%2Fcontent%2FmkGameEngine-view.json&sio=http:%2F%2F{{ip}}:3000"
+			"like": "http://localhost:3000/climbview.html#?config=http:%2F%2F{{ip}}:3000%2Fcontent%2FmkGameEngine-view.json&sio=http:%2F%2F{{ip}}:3000",
+			"button": "http://localhost:3000/climbview.html#?config=http:%2F%2F{{ip}}:3000%2Fcontent%2FmkGameEngine-view.json&sio=http:%2F%2F{{ip}}:3000"
 		},
 		{
 			"id": "visuals.browserview.climburl",
@@ -195,8 +195,8 @@
 			"level": "warning",
 			"testPoint": "url",
 			"requires": ["visuals.browserview"],
-			"like": "http://localhost:3000/climbview.html#?config=%2Fcontent%2FmkGameEngine-view.json&sio=http:%2F%2F{{ip}}:3000&test",
-			"button": "http://localhost:3000/climbview.html#?config=%2Fcontent%2FmkGameEngine-view.json&sio=http:%2F%2F{{ip}}:3000&test"
+			"like": "http://localhost:3000/climbview.html#?config=http:%2F%2F{{ip}}:3000%2Fcontent%2FmkGameEngine-view.json&sio=http:%2F%2F{{ip}}:3000&test",
+			"button": "http://localhost:3000/climbview.html#?config=http:%2F%2F{{ip}}:3000%2Fcontent%2FmkGameEngine-view.json&sio=http:%2F%2F{{ip}}:3000&test"
 		}
 	]
 }
