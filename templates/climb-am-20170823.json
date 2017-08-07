@@ -24,7 +24,7 @@
 			"level": "information",
 			"fileTag": "room:default",
 			"requires": ["musicodes.server"],
-			"post": "http://uploader:changeme@128.243.22.74:4201/api/1/processlog",
+			"post": "http://uploader:PASSWORD@HOSTNAME/1/logproc/api/1/processlog",
 			"show": true
 		},
 		{
