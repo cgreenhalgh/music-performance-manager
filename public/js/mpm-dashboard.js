@@ -62,6 +62,8 @@ module.controller('DashboardController', ['$scope','socket','mpmAgent','$interva
 			$scope.processes[msg['@id']] = msg;
 		} else if (msg['@type']=='Environment' && !!msg['@id']) {
 			$scope.environments[msg['@id']] = msg;
+		} else if (msg['@type']=='Probe' && !!msg['@id']) {
+			$scope.processes[msg['@id']] = msg;
 		} else {
 			console.log('unhandled report', msg);
 		}
@@ -169,6 +171,12 @@ module.controller('DashboardController', ['$scope','socket','mpmAgent','$interva
 			console.log('expect '+expected.length);
 			$scope.expected = expected;
 			checkExpected();
+			console.log('probes '+$scope.template.probes.length);
+			for (var pi in $scope.template.probes) {
+				var probe = $scope.template.probes[pi];
+				console.log('request probe', probe);
+				socket.emit('createProbe', probe);
+			}
 		}, function(err) {
 			var msg = 'Error loading template '+name+' ('+err.message+')';
 			console.log(msg);

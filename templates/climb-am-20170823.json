@@ -165,6 +165,35 @@
 			"button": null
 		},
 		{
+			"id": "logproc.probe",
+			"name": "Public Server",
+			"kind": "Report",
+			"level": "error",
+			"like": {
+				"@type": "Probe",
+				"probeType": "HTTP",
+				"@id": "urn:probe:logproc.probe"
+			}
+		},
+		{
+			"id": "logproc.probe.status",
+			"name": "HTTP Status",
+			"kind": "TestPoint",
+			"level": "information",
+			"testPoint": "status",
+			"requires": ["logproc.probe"],
+			"show": true
+		},
+		{
+			"id": "logproc.probe.ok",
+			"name": "OK",
+			"kind": "TestPoint",
+			"level": "error",
+			"testPoint": "status",
+			"requires": ["logproc.probe"],
+			"like": "200"
+		},
+		{
 			"id": "musicodes.server",
 			"name": "Musicodes server",
 			"kind": "Report",
@@ -189,6 +218,18 @@
 			"requires": ["musicodes.server"],
 			"post": "http://uploader:PASSWORD@HOSTNAME/1/logproc/api/1/processlog",
 			"show": true
+		}
+	],
+	"probes": [
+		{
+			"@id": "urn:probe:logproc.probe",
+			"probeType": "HTTP",
+			"title": "Logproc HTTP Probe",
+			"config": {
+				"url": "http://uploader:PASSWORD@HOSTNAME/1/logproc/api/1/ping",
+				"period": 5,
+				"timeout": 5
+			}
 		}
 	]
 }

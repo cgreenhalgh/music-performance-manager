@@ -6,6 +6,7 @@ c.f. muzicode experiences. Made available by server; one loaded by dashboard.
 
 Object with properties:
 - `expect` - array of `Expected` objects
+- `probes` - array of `Probe` objects
 
 `Expected` object, with properties:
 - `id` - string, for cross-reference
@@ -26,6 +27,12 @@ Object with properties:
   - `unmatcehd` - text (feedback)
   - `maxCardinality` - text
 
+`Probe` object, representing a Probe, ith properties:
+- `@id` - Probe unique ID
+- `title`
+- `probeType` (for probe), currently `HTTP`
+- `config` - object with Probe-type specific configuration (see below)
+
 Optional variable replacement expressions, e.g. "{{ip}}". To be developed more in future...
 
 ## Reports
@@ -34,8 +41,9 @@ Send periodically by reporting agents to indicate the current state of (e.g.) a 
 
 JSON-LD style object with properties:
 - `@id` - entity (process/environment) unique ID, typically "urn:guid:..."
-- `@type` - reporting entity type, currently `Process` or `Environment`
+- `@type` - reporting entity type, currently `Process`, `Environment` or `Probe`
 - `processType` (for process), currently `BrowserView`, `Node.js` or python
+- `probeType` (for probe), currently `HTTP`
 - `title`
 - `info` - object with general / current information about entity
 - `config` - object with key configuration
@@ -58,6 +66,24 @@ JSON-LD style object with properties:
 (- `hash` - hash (md5?) of file bytes (preceeded by length))
 - `useType`, `log` (`config`, `input`, `output` ...?)
 - `tag` - process tag for file (cf parameter name); indicates use/purpose of file to application
+
+## Probes
+
+Probes are active agents created within the server to satisfy dashboard clients.
+
+### HTTP Probe 
+
+`HTTP` `Probe` periodically POSTs to a URL.
+
+`config`:
+- `url` - URL to post to
+- `period` - time between probes in seconds
+- `timeout` - maximum allowed response time
+
+Presents `testPoint`(s):
+- (name) `status` - HTTP status code or network error status
+
+(to do: latency)
 
 ## Messages
 
@@ -82,6 +108,8 @@ JSON-LD style object with properties:
 `postFile`, `{"iri":SOURCEIRI, "path":FILEPATH, "url":URL, "request":REQUESTID }`. Ask agent to HTTP POST specified file to the specified URL. E.g. to upload a log file. (proposed 2017-07-14)
 
 `postFileResponse`,  `{"iri":SOURCEIRI, "path":FILEPATH, "request":REQUESTID, "status":HTTPSTATUSCODE, "length":FILELENGTH }`. Response to `postFile` request (proposed 2017-07-14)
+
+`createProbe`, message is `Probe` object, sent by dashboard to server.
 
 ### HTTP
 
