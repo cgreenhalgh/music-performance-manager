@@ -2,7 +2,7 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # redis
-sudo apt-get install redis-server
+sudo apt-get install -y redis-server
 # note: logfile /var/log/redis/redis-server.log
 # note: dir /var/lib/redis
 # note: port 6379
