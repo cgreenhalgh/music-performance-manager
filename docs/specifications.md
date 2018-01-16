@@ -24,10 +24,11 @@ Object with properties:
 - `maxCardinality` - number
 - `feedback`:
   - `matched` - text (feedback)
-  - `unmatcehd` - text (feedback)
+  - `unmatched` - text (feedback)
   - `maxCardinality` - text
+- `after` - array of IDs that it should 'be after', e.g. a Report like @type Process processType BrowserView is info.browserInfo.datetime; a TestPoint with a like value is when it was set to that value
 
-`Probe` object, representing a Probe, ith properties:
+`Probe` object, representing a Probe, with properties:
 - `@id` - Probe unique ID
 - `title`
 - `probeType` (for probe), currently `HTTP`
@@ -37,7 +38,7 @@ Optional variable replacement expressions, e.g. "{{ip}}". To be developed more i
 
 ## Reports
 
-Send periodically by reporting agents to indicate the current state of (e.g.) a process or execution environment.
+Sent periodically by reporting agents to indicate the current state of (e.g.) a process or execution environment.
 
 JSON-LD style object with properties:
 - `@id` - entity (process/environment) unique ID, typically "urn:guid:..."
