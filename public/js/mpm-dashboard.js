@@ -59,6 +59,12 @@ module.controller('DashboardController', ['$scope','socket','mpmAgent','$interva
 			console.log('Warning: no expire in report', msg);
 		}
 		if (msg['@type']=='Process' && !!msg['@id']) {
+			if ($scope.processes[msg['@id']]===undefined) {
+			  // new
+			  msg.aftertime = now;
+			} else {
+			  msg.aftertime = $scope.processes[msg['@id']].aftertime;
+			}
 			$scope.processes[msg['@id']] = msg;
 		} else if (msg['@type']=='Environment' && !!msg['@id']) {
 			$scope.environments[msg['@id']] = msg;
@@ -89,6 +95,7 @@ module.controller('DashboardController', ['$scope','socket','mpmAgent','$interva
 		var point = msg.iri+'/'+msg.id;
 		if ($scope.monitoredTestPoints[point]!==undefined) {
 			$scope.monitoredTestPoints[point].value = msg.value;
+			$scope.monitoredTestPoints[point].aftertime = Date.now();
 			console.log('update to monitor value '+point);
 			checkExpected();
 		}
@@ -221,6 +228,25 @@ module.controller('DashboardController', ['$scope','socket','mpmAgent','$interva
 		if (debug) console.log('matches, not equal and not object, '+pattern+', '+value);
 		return false;
 	};
+	function getAftertime(expected, required) {
+	  if ('Report'==expected.expect.kind) {
+	    if (expected.matches!==undefined && expected.matches.length>0)
+	      return expected.matches[0].aftertime;
+	    return null;
+	  }
+	  if ('TestPoint'==expected.expect.kind && expected.expect.testPoint) {
+	    // TODO multiple matches, multiple requires
+	    var report = required[expected.expect.requires[0]].matches[0];
+	    var point = report['@id']+'/'+expected.expect.testPoint;
+	    if ($scope.monitoredTestPoints[point]===undefined) {
+	      return null;
+	    }
+	    if (matches(expected.expect.like, $scope.monitoredTestPoints[point].value)) {
+	      return $scope.monitoredTestPoints[point].aftertime;
+	    }
+	  }
+	  return null;
+	}
 	function checkExpected() {
 		var debug = false;
 		console.log('check expected ('+$scope.expected.length+')');
@@ -230,6 +256,7 @@ module.controller('DashboardController', ['$scope','socket','mpmAgent','$interva
 			var expected = $scope.expected[ei];
 			expected.matched = false;
 			expected.tooMany = false;
+			expected.notafter = false;
 			expected.matches = [];
 			expected.hide = false;
 			expected.status = '';
@@ -306,6 +333,32 @@ module.controller('DashboardController', ['$scope','socket','mpmAgent','$interva
 			}
 			if (!!expected.expect.id && expected.matched && !expected.tooMany) {
 				required[expected.expect.id] = expected;
+			}
+			if (expected.expect.after!==undefined && expected.expect.after.length>0) {
+			  var aftertime = getAftertime(expected, required);
+			  if (!aftertime) {
+			    if (debug) console.log('no aftertime for '+expected.expect.id);
+			  } else {
+			    var notafter = false;
+			    for (var ai in expected.expect.after) {
+			      var after = expected.expect.after[ai]
+			      if (required[after]!==undefined) {
+			        var na2 = getAftertime(required[after], required);
+			        if (!!na2 && na2 > aftertime) {
+			          if (debug) console.log('not aftertime for '+expected.expect.id+' cf '+after+' ('+aftertime+' vs '+na2+')');
+			          notafter = true;
+			          break;
+			        } else {
+			          if (debug) console.log('ok aftertime for '+expected.expect.id+' cf '+after+' ('+aftertime+' vs '+na2+')');
+			        }
+			      }
+			    }
+			    if (notafter) {
+			      //console.log('Mark notafter: '+expected.expect.id);
+			      expected.notafter = true;
+			      expected.status = 'warning';
+			    }
+			  }
 			}
 		}
 	};

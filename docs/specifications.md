@@ -26,7 +26,7 @@ Object with properties:
   - `matched` - text (feedback)
   - `unmatched` - text (feedback)
   - `maxCardinality` - text
-- `after` - array of IDs that it should 'be after', e.g. a Report like @type Process processType BrowserView is info.browserInfo.datetime; a TestPoint with a like value is when it was set to that value
+- `after` - array of IDs that it should 'be after', e.g. a Report like @type Process processType BrowserView is info.browserInfo.datetime; a TestPoint with a like value is when it was set to that value; a TestPoint without a like value is when it last changed.
 
 `Probe` object, representing a Probe, with properties:
 - `@id` - Probe unique ID
