@@ -9,11 +9,37 @@ The idea: semi-automated monitoring of live performance set-up (computers, instr
 
 Part of the EPSRC-funded FAST IMPACt project (grant	EP/L019981/1).
 
-Copyright (c) The University of Nottingham, 2016
+Copyright (c) The University of Nottingham, 2016-2018
 
 By Chris Greenhalgh, chris.greenhalgh@nottingham.ac.uk
 
-## install
+## Install / run
+
+### Docker build
+
+```
+docker build -t mpm .
+docker tag mpm cgreenhalgh/mpm
+docker tag mpm cgreenhalgh/mpm:20180528.1
+```
+
+### Docker run
+
+Needs redis running, e.g. (in this case on an internal network)
+```
+docker network create mc-net
+docker run --name redis --network=mc-net -d --restart=always redis:4.0
+```
+
+```
+docker run -d --restart=always --network=mc-net --name=mpm -p 3003:3003 mpm
+```
+
+Volumes:
+- `/srv/mpm/logs`
+- `/srv/mpm/tempaltes`
+
+### old install
 
 Note: upstart configuration for mpm as service "mpm" in `scripts/mpm.conf`.
 
